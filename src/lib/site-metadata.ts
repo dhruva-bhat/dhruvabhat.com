@@ -3,7 +3,7 @@ import { siteConfig } from '@/data/portfolio'
 
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dhruvabhat.com'
 
-const title = `${siteConfig.name} — AI Infrastructure and Backend Systems`
+const title = 'dhruva bhat'
 const description =
   'Portfolio of Dhruva Bhat, a UC Berkeley EECS and Bioengineering student building reliable AI infrastructure, backend systems, and scientific machine-learning pipelines.'
 
