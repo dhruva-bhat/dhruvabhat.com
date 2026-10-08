@@ -1,1 +1,0 @@
-export function SectionHeading({index,kicker,title,copy}:{index:string;kicker:string;title:string;copy?:string}){return <div className="section-heading" data-reveal><div><span className="section-index">{index}</span><span className="eyebrow">{kicker}</span></div><div><h2>{title}</h2>{copy&&<p>{copy}</p>}</div></div>}
