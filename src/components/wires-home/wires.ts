@@ -67,8 +67,12 @@ export function buildWire(P: Point[], radius: number): Wire {
   return { pts, cum, len }
 }
 
-/** Routes the three wires from the name to the work (left), about (right) and contact (bottom) labels. */
-export function layoutWires(name: Rect, labels: Rect[], subtitleBottom: number): Wire[] {
+/**
+ * Routes the three wires from the name to the work (left), about (right) and contact (bottom) labels.
+ * `stacked` is the phone layout, where every label sits below the name.
+ */
+export function layoutWires(name: Rect, labels: Rect[], subtitleBottom: number, stacked = false): Wire[] {
+  if (stacked) return layoutStackedWires(name, labels, subtitleBottom)
   const [left, right, bottom] = labels
   const cy = name.cy
   // left: out of the name, then a 45° run down to the label
@@ -91,6 +95,24 @@ export function layoutWires(name: Rect, labels: Rect[], subtitleBottom: number):
   const jog = 70
   const wB = buildWire([{ x: name.cx, y: sy }, { x: name.cx, y: y1 }, { x: name.cx + jog, y: y1 + jog }, { x: bottom.cx, y: bottom.t - 8 }], CORNER_RADIUS)
   return [wL, wR, wB]
+}
+
+/** Phone layout: each wire drops from under the name, bends 45° toward its label, then drops onto it. */
+function layoutStackedWires(name: Rect, labels: Rect[], subtitleBottom: number): Wire[] {
+  const sy = subtitleBottom + 8
+  const inset = (name.r - name.l) * 0.22
+  const starts = [name.l + inset, name.r - inset, name.cx]
+  return labels.map((label, i) => {
+    const sx = starts[i]
+    const ex = label.cx
+    const ey = label.t - 8
+    const run = Math.min(Math.abs(ex - sx), Math.max(0, ey - sy))
+    const y1 = sy + Math.max(0, ey - sy - run) * 0.4
+    const pts = [{ x: sx, y: sy }, { x: sx, y: y1 }, { x: sx + Math.sign(ex - sx) * run, y: y1 + run }, { x: ex, y: ey }]
+    // drop repeated points (a straight wire has no bends)
+    const path = pts.filter((p, j) => j === 0 || Math.hypot(p.x - pts[j - 1].x, p.y - pts[j - 1].y) > 0.5)
+    return buildWire(path, CORNER_RADIUS)
+  })
 }
 
 /** Strokes the stretch of a wire between arc lengths s0 and s1, optionally jittered like an arc of current. */

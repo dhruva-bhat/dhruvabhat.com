@@ -119,7 +119,6 @@ export function WiresHome() {
       <button id="wLb0" className="w-lb">work</button>
       <button id="wLb1" className="w-lb">about</button>
       <button id="wLb2" className="w-lb">contact</button>
-      <button id="wRep" className="w-rep">replay</button>
       <button id="wMoon" aria-label="switch to light mode">
         <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
           <path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z" fill="currentColor" />

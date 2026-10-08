@@ -1,4 +1,4 @@
-#wRoot{position:relative;width:100%;height:100vh;min-height:560px;background:#000;overflow:hidden;text-transform:lowercase}
+#wRoot{position:relative;width:100%;height:100vh;height:100dvh;min-height:560px;background:#000;overflow:hidden;text-transform:lowercase}
 #wCv{position:absolute;left:0;top:0;width:100%;height:100%;z-index:1}
 .w-center{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
 #wRoot button{text-transform:inherit}
@@ -20,12 +20,10 @@
 .w-lb{position:absolute;z-index:3;opacity:0;pointer-events:none;transition:opacity .8s,color .2s;font:600 38px 'Cormorant Garamond',Georgia,'Times New Roman',serif;color:#cfd6d6;background:none;border:0;padding:10px 14px;min-height:44px;cursor:pointer}
 .w-lb.show{opacity:1;pointer-events:auto}
 .w-lb:hover,.w-lb:focus-visible,.w-lb.zap{color:#fff}
-.w-lb:focus-visible,.w-rep:focus-visible,#wBack:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.w-lb:focus-visible,#wBack:focus-visible{outline:2px solid #fff;outline-offset:3px}
 #wLb0{left:20px;top:calc(50% - 110px);transform:translateY(-50%)}
 #wLb1{right:20px;top:calc(50% + 110px);transform:translateY(-50%)}
 #wLb2{left:calc(50% + 70px);bottom:22px;transform:translateX(-50%)}
-.w-rep{position:absolute;left:14px;bottom:10px;z-index:5;font:inherit;font-size:20px;color:#4d5658;background:none;border:0;cursor:pointer;min-height:44px;padding:0 10px;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif}
-.w-rep:hover{color:#9aa4a5}
 #wOv{position:absolute;left:0;top:0;right:0;bottom:0;background:#23282b;z-index:20;visibility:hidden;clip-path:circle(0px at 50% 50%);color:#e6ecec;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif}
 #wBack{position:absolute;left:18px;top:14px;z-index:2;font:inherit;font-size:24px;color:#cfd6d6;background:none;border:0;cursor:pointer;min-height:44px;padding:0 12px}
 #wBack:hover{color:#fff}
@@ -84,5 +82,30 @@
 .rise{opacity:0;transform:translateY(14px)}
 #wOv.on .rise{animation:w-rise .7s ease forwards;animation-delay:calc(var(--i) * 90ms)}
 @keyframes w-rise{to{opacity:1;transform:none}}
-@media (max-width:760px){.w-lb{font-size:28px}#wLb0{top:calc(50% - 80px)}#wLb1{top:calc(50% + 80px)}#wStatus{font-size:40px}.w-about{flex-direction:column;align-items:flex-start;gap:28px}.w-about figure{flex:none;width:100%;max-width:360px}}
+/* phones and tablets: labels sit below the name and the wires drop down to them (STACKED_QUERY in mount.ts) */
+@media (max-width:1100px){
+#wLb0{left:16px;top:70%;transform:none}
+#wLb1{right:16px;top:70%;transform:none}
+#wLb2{left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%)}
+}
+/* phones: smaller type, and pages scroll below the back button */
+@media (max-width:760px){
+.w-lb{font-size:28px}
+#wStatus{font-size:40px}
+#wBack{top:10px;left:10px}
+.w-scroll{top:62px;padding:0 22px}
+.w-sec,#wSecWork,.w-detail{padding:12px 0 48px;margin:0 auto}
+.w-sec h2,#wSecWork h2{margin-bottom:22px;font-size:36px}
+.w-detail h2{font-size:34px}
+.w-sec p{font-size:21px}
+.w-sec .dim{font-size:17px}
+#wSecWork .w-item{margin-bottom:16px}
+#wSecWork .w-item b{font-size:23px}
+#wSecWork .w-item>span{font-size:15px}
+.w-points li{margin-bottom:12px;font-size:18px}
+.w-links{font-size:26px}
+.w-links span{overflow-wrap:anywhere}
+.w-about{flex-direction:column;align-items:flex-start;gap:24px}
+.w-about figure{flex:none;width:100%;max-width:360px}
+}
 @media (prefers-reduced-motion:reduce){#wSub{transition:none}#wStatus{transition:none}.w-lb{transition:none}.rise,.rise2{opacity:1;transform:none}#wOv.on .rise,.w-detail.go .rise2{animation:none}#wNoLight,#wNoLight svg,#wNoLight p,.w-about img.w-alt{transition:none}.w-caret{animation:none}}

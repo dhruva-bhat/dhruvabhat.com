@@ -21,6 +21,19 @@ describe('wires', () => {
     expect(bottom.pts.at(-1)!.y).toBeCloseTo(labels[2].t - 8)
   })
 
+  it('drops every wire down onto its label in the stacked (phone) layout', () => {
+    const name = rect(64, 374, 311, 437)
+    const labels = [rect(16, 568, 101, 622), rect(274, 568, 359, 622), rect(132, 732, 243, 786)]
+    const wires = layoutWires(name, labels, 459, true)
+    wires.forEach((w, i) => {
+      expect(w.pts[0].y).toBeCloseTo(467)
+      expect(w.pts.at(-1)!.x).toBeCloseTo(labels[i].cx)
+      expect(w.pts.at(-1)!.y).toBeCloseTo(labels[i].t - 8)
+      // never above the start or past the screen edges
+      expect(w.pts.every((p) => p.y >= 466 && p.x >= 0 && p.x <= 375)).toBe(true)
+    })
+  })
+
   it('hit-tests the nearest wire within range', () => {
     const wires = [buildWire([{ x: 0, y: 0 }, { x: 100, y: 0 }], 26), buildWire([{ x: 0, y: 50 }, { x: 100, y: 50 }], 26)]
     expect(wireAt(wires, 50, 4, 12)).toBe(0)

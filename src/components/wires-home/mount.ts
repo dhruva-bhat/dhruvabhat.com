@@ -7,6 +7,9 @@ import { drawPulse, drawWire, layoutWires, wireAt, type Pulse, type Rect, type W
 
 type Phase = 'intro' | 'wires' | 'home' | 'jolt' | 'expand' | 'open' | 'collapse'
 
+/** Below this width the labels sit under the name (see wires-home.css) and the wires drop down to them. */
+const STACKED_QUERY = '(max-width: 1100px)'
+
 /** How brightly a wire lights up when its section is picked. */
 const JOLT_FLASH = 0.7
 
@@ -109,7 +112,7 @@ export function mountWiresHome(root: HTMLElement) {
     const gy = name.t - 4
     view = { cx: name.cx, gy, s: Math.max(0.4, Math.min(1.15, (gy - 12) / 178, width / 800)) }
     labelRects = labels.map(rel)
-    wires = layoutWires(name, labelRects, rel(subtitle).b)
+    wires = layoutWires(name, labelRects, rel(subtitle).b, window.matchMedia(STACKED_QUERY).matches)
     pulses = []
     needsLayout = false
     return true
@@ -373,7 +376,6 @@ export function mountWiresHome(root: HTMLElement) {
   })
   projects.buttons.forEach((b, i) => b.addEventListener('click', () => openProject(i), on))
   backButton.addEventListener('click', goBack, on)
-  required<HTMLElement>(root, '#wRep').addEventListener('click', playIntro, on)
   required<HTMLElement>(root, '#wMoon').addEventListener('click', showNoLight, on)
   noLight.addEventListener('click', hideNoLight, on)
   document.addEventListener('keydown', (e) => {
