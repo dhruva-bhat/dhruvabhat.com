@@ -3,7 +3,7 @@ import { ExperienceTimeline } from '@/components/experience-timeline'
 import { timelineEntries } from '@/data/portfolio'
 
 export const metadata: Metadata = {
-  title: 'Timeline',
+  title: 'timeline',
   description: 'Dhruva Bhat’s engineering, research, and education timeline.',
 }
 

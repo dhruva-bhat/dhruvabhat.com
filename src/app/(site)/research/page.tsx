@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { publications } from '@/data/portfolio'
 
-export const metadata:Metadata={title:'Research',description:'Publications, presentations, patents, and current research interests.'}
+export const metadata:Metadata={title:'research',description:'Publications, presentations, patents, and current research interests.'}
 
 const interests=['Molecular foundation models','Molecular generation','Scientific machine learning','Computational biology','Representation learning','Neural data analysis','Human-compatible recommendation systems','AI-assisted medical devices','Multimodal biological data']
 const groups = [

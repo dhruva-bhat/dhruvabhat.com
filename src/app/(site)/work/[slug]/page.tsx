@@ -16,10 +16,10 @@ export async function generateMetadata({ params }: CaseStudyProps): Promise<Meta
   const { slug } = await params
   const project = projects.find((candidate) => candidate.slug === slug)
 
-  if (!project) return { title: 'Project not found' }
+  if (!project) return { title: 'project not found' }
 
   return {
-    title: project.title,
+    title: project.title.toLowerCase(),
     description: project.summary,
     alternates: { canonical: `/work/${project.slug}` },
   }

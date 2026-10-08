@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { siteConfig } from '@/data/portfolio'
 
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dhruvabhat.com'
 
@@ -10,7 +9,7 @@ const description =
 /** Shared by both root layouts (home and the rest of the site). */
 export const siteMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: title, template: `%s — ${siteConfig.name}` },
+  title: { default: title, template: `%s — ${title}` },
   description,
   alternates: { canonical: '/' },
   openGraph: { title, description, type: 'website', url: '/' },

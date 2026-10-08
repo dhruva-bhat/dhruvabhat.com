@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { ArrowUpRight } from 'lucide-react'
 import { experiences, siteConfig, skills } from '@/data/portfolio'
 
-export const metadata:Metadata={title:'About',description:'About Dhruva Bhat, UC Berkeley EECS and Bioengineering student.'}
+export const metadata:Metadata={title:'about',description:'About Dhruva Bhat, UC Berkeley EECS and Bioengineering student.'}
 
 export default function AboutPage() {
   const skillGroups = [...new Set(skills.map((skill)=>skill.group))]
