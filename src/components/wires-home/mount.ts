@@ -55,7 +55,11 @@ export function mountWiresHome(root: HTMLElement) {
   const backButton = required<HTMLButtonElement>(root, '#wBack')
   const noLight = required<HTMLElement>(root, '#wNoLight')
   const labels = ['#wLb0', '#wLb1', '#wLb2'].map((id) => required<HTMLButtonElement>(root, id))
-  const sections = ['#wSecWork', '#wSecAbout', '#wSecContact'].map((id) => required<HTMLElement>(root, id))
+  const resumeButton = required<HTMLButtonElement>(root, '#wResume')
+  const resumeFrame = required<HTMLIFrameElement>(root, '#wResumePdf')
+  /** Section i's circle grows from origins[i]: the three wired labels, then the resume button. */
+  const origins = [...labels, resumeButton]
+  const sections = ['#wSecWork', '#wSecAbout', '#wSecContact', '#wSecResume'].map((id) => required<HTMLElement>(root, id))
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
 
   const timers = createTimers()
@@ -70,7 +74,7 @@ export function mountWiresHome(root: HTMLElement) {
   let dpr = 1
   let view: SceneView = { cx: 0, gy: 0, s: 1 }
   let wires: Wire[] = []
-  let labelRects: Rect[] = []
+  let originRects: Rect[] = []
   let pulses: Pulse[] = []
   let grow = [0, 0, 0]
   let glow = [0, 0, 0]
@@ -111,8 +115,8 @@ export function mountWiresHome(root: HTMLElement) {
     const name = rel(nameGhost)
     const gy = name.t - 4
     view = { cx: name.cx, gy, s: Math.max(0.4, Math.min(1.15, (gy - 12) / 178, width / 800)) }
-    labelRects = labels.map(rel)
-    wires = layoutWires(name, labelRects, rel(subtitle).b, window.matchMedia(STACKED_QUERY).matches)
+    originRects = origins.map(rel)
+    wires = layoutWires(name, originRects.slice(0, labels.length), rel(subtitle).b, window.matchMedia(STACKED_QUERY).matches)
     pulses = []
     needsLayout = false
     return true
@@ -157,7 +161,7 @@ export function mountWiresHome(root: HTMLElement) {
       backButton.focus({ preventScroll: true })
     }
     if (reduceMotion) return done()
-    const at = { x: labelRects[i].cx, y: labelRects[i].cy }
+    const at = { x: originRects[i].cx, y: originRects[i].cy }
     overlay.style.clipPath = `circle(0px at ${at.x}px ${at.y}px)`
     stopReveal = revealCircle(overlay, 0, maxRadius(at.x, at.y), 1000, at, done)
   }
@@ -173,14 +177,14 @@ export function mountWiresHome(root: HTMLElement) {
       overlay.style.clipPath = 'circle(0px at 50% 50%)'
       labels.forEach((l) => l.classList.remove('zap'))
       phase = 'home'
-      labels[i]?.focus({ preventScroll: true })
+      origins[i]?.focus({ preventScroll: true })
       // a quieter signal runs back from the label to the name
       if (!reduceMotion && wires[i]) {
         pulses.push(jolt(i, 0.7, true))
       }
     }
     if (reduceMotion) return done()
-    const at = { x: labelRects[i].cx, y: labelRects[i].cy }
+    const at = { x: originRects[i].cx, y: originRects[i].cy }
     const r = maxRadius(at.x, at.y)
     overlay.style.clipPath = `circle(${r}px at ${at.x}px ${at.y}px)`
     stopReveal = revealCircle(overlay, r, 0, 800, at, done)
@@ -218,6 +222,15 @@ export function mountWiresHome(root: HTMLElement) {
       flash[i] = JOLT_FLASH
     })
     timers.at(780, () => openOverlay(i))
+  }
+
+  /** The resume has no wire: its section opens straight from the button. */
+  function openResume() {
+    if (phase !== 'home') return
+    hovered = -1
+    // load the PDF only once someone asks for it
+    if (!resumeFrame.getAttribute('src') && resumeFrame.dataset.src) resumeFrame.src = resumeFrame.dataset.src
+    openOverlay(origins.indexOf(resumeButton))
   }
 
   // ---- intro sequence ----
@@ -376,6 +389,7 @@ export function mountWiresHome(root: HTMLElement) {
   })
   projects.buttons.forEach((b, i) => b.addEventListener('click', () => openProject(i), on))
   backButton.addEventListener('click', goBack, on)
+  resumeButton.addEventListener('click', openResume, on)
   required<HTMLElement>(root, '#wMoon').addEventListener('click', showNoLight, on)
   noLight.addEventListener('click', hideNoLight, on)
   document.addEventListener('keydown', (e) => {

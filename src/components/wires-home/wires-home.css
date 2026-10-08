@@ -61,12 +61,15 @@
 .w-fly span{position:absolute;white-space:pre;transform-origin:0 0;will-change:transform}
 #wOv.w-flying .w-ch{visibility:hidden}
 #wSecAbout{max-width:980px}
+#wSecResume{max-width:900px}
+.w-resume-links{display:flex;gap:28px;margin:0 0 20px;font-size:26px}
+.w-pdf{display:block;width:100%;height:max(360px,calc(100vh - 340px));border:0;border-radius:6px;background:#fff}
 .w-about{display:flex;align-items:center;gap:52px}
 .w-about figure{position:relative;margin:0;flex:0 0 320px}
 .w-about img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:34% 50%;border-radius:6px}
 .w-about img.w-alt{position:absolute;left:0;top:0;height:100%;object-position:50% 40%;opacity:0;transition:opacity .35s ease}
 .w-about figure:hover img.w-alt{opacity:1}
-#wResume{position:absolute;right:22px;bottom:16px;z-index:5;display:flex;align-items:center;min-height:44px;padding:0 10px;font:600 24px 'Cormorant Garamond',Georgia,'Times New Roman',serif;color:#9aa4a5;text-decoration:none;opacity:0;pointer-events:none;transition:opacity 1s,color .2s}
+#wResume{position:absolute;right:22px;bottom:16px;z-index:5;display:flex;align-items:center;min-height:44px;padding:0 10px;font:600 24px 'Cormorant Garamond',Georgia,'Times New Roman',serif;color:#9aa4a5;background:none;border:0;cursor:pointer;opacity:0;pointer-events:none;transition:opacity 1s,color .2s}
 .w-ready #wResume{opacity:1;pointer-events:auto}
 #wResume:hover,#wResume:focus-visible{color:#fff}
 #wResume:focus-visible{outline:2px solid #fff;outline-offset:3px}
@@ -112,6 +115,8 @@
 .w-points li{margin-bottom:12px;font-size:18px}
 .w-links{font-size:26px}
 .w-links span{overflow-wrap:anywhere}
+.w-resume-links{font-size:22px}
+.w-pdf{height:max(320px,calc(100dvh - 240px))}
 .w-about{flex-direction:column;align-items:flex-start;gap:24px}
 .w-about figure{flex:none;width:100%;max-width:360px}
 }

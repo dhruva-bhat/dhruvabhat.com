@@ -87,6 +87,20 @@ function Contact() {
   )
 }
 
+function Resume() {
+  return (
+    <section id="wSecResume" className="w-sec">
+      <h2 className="rise" style={stagger(0)}>resume</h2>
+      <div className="w-resume-links rise" style={stagger(1)}>
+        <a href={siteConfig.resume} target="_blank" rel="noopener noreferrer">open pdf</a>
+        <a href={siteConfig.resume} download>download</a>
+      </div>
+      {/* src is set from data-src the first time the section opens (see mount.ts) */}
+      <iframe id="wResumePdf" className="w-pdf rise" style={stagger(2)} title="Dhruva Bhat’s resume" data-src={`${siteConfig.resume}#view=FitH`} />
+    </section>
+  )
+}
+
 /**
  * Full-screen animated home: the name types in, wires grow out to work / about / contact, and little
  * agents stack blocks above the name. The canvas animation and all interaction live in ./mount.ts;
@@ -119,9 +133,7 @@ export function WiresHome() {
       <button id="wLb0" className="w-lb">work</button>
       <button id="wLb1" className="w-lb">about</button>
       <button id="wLb2" className="w-lb">contact</button>
-      <a id="wResume" href={siteConfig.resume} target="_blank" rel="noopener noreferrer">
-        resume
-      </a>
+      <button id="wResume">resume</button>
       <button id="wMoon" aria-label="switch to light mode">
         <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
           <path d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z" fill="currentColor" />
@@ -145,6 +157,7 @@ export function WiresHome() {
           ))}
           <About />
           <Contact />
+          <Resume />
         </div>
       </div>
     </div>
