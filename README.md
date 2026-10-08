@@ -6,20 +6,12 @@ A production-oriented, multi-page portfolio positioning Dhruva Bhat around AI in
 
 ```bash
 pnpm install
-cp .env.example .env.local
 pnpm dev
 ```
 
-The project uses Webpack for local development and production builds because
-Turbopack's memory-mapped filesystem cache can stall in cloud-synchronized
-macOS Documents folders. Dependencies are hard-linked from pnpm's local store
-via the checked-in `.npmrc`.
-
-For this iCloud-managed checkout, the generated `node_modules` and `.next`
-directories are local symlinks into `~/Library/Caches/dhruva-website`. Keeping
-both generated trees outside Documents prevents macOS from evicting active
-package and Webpack files. These machine-local links are ignored by Git and do
-not affect Vercel or checkouts outside iCloud-managed folders.
+Set `NEXT_PUBLIC_SITE_URL` in `.env.local` if you need absolute URLs other than `https://dhruvabhat.com`.
+The project uses Webpack for local development and production builds. Dependencies are hard-linked from
+pnpm's local store via the checked-in `.npmrc`.
 
 Open `http://localhost:3000`. Other commands:
 
@@ -33,16 +25,37 @@ pnpm format
 
 ## Architecture
 
-- `src/app/` — server-first routes, metadata, sitemap, and robots
-- `src/components/` — focused interactive and presentation components
-- `src/data/portfolio.ts` — verified portfolio content and site configuration
-- `public/` — résumé, project, and publication assets
+The app has two root layouts (route groups), so the home screen gets a bare black page while every other route
+keeps the site chrome:
 
-Interactive components are isolated client boundaries. Page content remains server-rendered. The dedicated `/timeline` route presents the résumé chronology with scroll-linked progress, while the homepage uses a compact typewriter introduction and an optimized personal portrait. A decorative Canvas geometry layer uses refs and `requestAnimationFrame`, morphs with scroll progress, pauses when hidden, responds to section visibility, and becomes static under reduced motion.
+- `src/app/(home)/` — `/`: the full-screen animated home screen
+- `src/app/(site)/` — `/work`, `/timeline`, `/research`, `/about` and project pages, wrapped in `SiteShell`
+- `src/app/global-not-found.tsx` — 404 for unmatched URLs (required with multiple root layouts)
+- `src/components/site-shell.tsx` — header, footer, background geometry, fonts and `src/styles/globals.css`
+- `src/lib/site-metadata.ts`, `src/components/person-schema.tsx` — shared metadata and structured data
+- `src/data/` — all content, checked by TypeScript
+- `public/` — résumé and portraits
+
+### Home screen (`src/components/wires-home/`)
+
+- `wires-home.tsx` — the React component: static markup only (name, labels, overlay sections)
+- `mount.ts` — wires the markup up: intro typing sequence, frame loop, overlay, input, cleanup
+- `wires.ts` — wire routing, drawing, electrical pulses and hit-testing
+- `overlay.ts` — the circular section reveal and the work-list ↔ project-page letter flight
+- `scene/` — the block-stacking agents: `simulation.ts` (behaviour, physics, the claw, visitor interaction),
+  `draw.ts` and `faces.ts` (rendering), `poses.ts` (pose and hit-test helpers), `layout.ts`, `types.ts`
+- `wires-home.css` — its styles; Cormorant Garamond is loaded with `next/font` in `src/app/(home)/layout.tsx`
+
+The canvas code is plain Canvas 2D with no dependencies, and respects `prefers-reduced-motion`
+(the finished tower is shown with no animation).
+
+Interactive components are isolated client boundaries. Page content remains server-rendered.
 
 ## Editing content
 
-All main content is in `src/data/portfolio.ts` and checked by TypeScript.
+Site content is in `src/data/portfolio.ts`; the home screen's work entries (one per résumé section) are in
+`src/data/work.ts`. The about text and photos are in `src/components/wires-home/wires-home.tsx`, and the photos
+live in `public/portraits/`.
 
 ### Add a project
 
@@ -58,7 +71,7 @@ Edit the `ornl-ai-infrastructure` project. Keep descriptions limited to publicly
 
 ### Replace placeholders
 
-- GitHub, Google Scholar, ORCID: update `siteConfig.github`, `siteConfig.scholar`, `siteConfig.orcid`
+- Google Scholar, ORCID: update `siteConfig.scholar`, `siteConfig.orcid`
 - Résumé: the current PDF is `public/resume/dhruva-bhat-resume.pdf`; replace that file in place to keep every résumé link current
 - Project media: put optimized AVIF/WebP files in `public/projects/` and reference them in the project model/component
 - Publication links: update each `Publication.link`
@@ -75,10 +88,10 @@ Import the repository into Vercel, set `NEXT_PUBLIC_SITE_URL`, then deploy. No d
 - Semantic landmarks, skip link, visible focus, and keyboard-accessible navigation
 - Decorative geometry is hidden from assistive technology; all information remains in HTML
 - `prefers-reduced-motion` and `prefers-contrast` support
-- Comic Neue and Geist Mono are self-hosted; no remote font request
+- All fonts are self-hosted (Comic Neue, Geist, and Cormorant Garamond via `next/font`); no remote font request
 - Canvas avoids WebGL and caps device pixel ratio
-- Client JavaScript is limited to navigation, the typewriter, timeline/reveal observation, project filtering, and Canvas geometry
+- Client JavaScript is limited to the home screen, navigation, timeline/reveal observation, project filtering, and Canvas geometry
 
 ## Design system
 
-Tokens live in `src/app/globals.css`: washed graphite surfaces, dusty blue-gray signals, carefully weighted Comic Neue typography, and Geist Mono for dates and technical metadata.
+Tokens live in `src/styles/globals.css`: washed graphite surfaces, dusty blue-gray signals, carefully weighted Comic Neue typography, and Geist Mono for dates and technical metadata.

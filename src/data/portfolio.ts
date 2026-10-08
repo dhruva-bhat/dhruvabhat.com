@@ -69,7 +69,7 @@ export const siteConfig = {
   email: 'dhruva.betkoppa@gmail.com',
   phone: '858-205-4029',
   linkedin: 'https://linkedin.com/in/dhruvabhat',
-  github: '',
+  github: 'https://github.com/dhruva-bhat',
   scholar: '',
   orcid: '',
   resume: '/resume/dhruva-bhat-resume.pdf',
