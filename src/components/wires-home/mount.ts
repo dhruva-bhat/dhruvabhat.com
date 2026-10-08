@@ -241,7 +241,7 @@ export function mountWiresHome(root: HTMLElement) {
   const setName = (s: string) => {
     nameText.textContent = s
   }
-  /** Schedules typing (or deleting) `str` one character at a time from `t` ms; returns when it finishes. */
+  /** Schedules typing (or backspacing) `str` one character at a time from `t` ms; returns when it finishes. */
   const type = (str: string, t: number, rate: number, set: (s: string) => void, erase = false) => {
     const n = str.length
     for (let i = 1; i <= n; i++) {
@@ -264,7 +264,7 @@ export function mountWiresHome(root: HTMLElement) {
     wiresStart = -1
     hovered = -1
     openSection = -1
-    root.classList.remove('w-moved', 'w-ready', 'w-namelive', 'w-sub')
+    root.classList.remove('w-ready', 'w-namelive', 'w-sub')
     scene.reset()
     sc.started = false
     sc.alpha = 0
@@ -283,9 +283,7 @@ export function mountWiresHome(root: HTMLElement) {
   function playIntro() {
     reset()
     if (reduceMotion) {
-      root.classList.add('w-moved', 'w-ready', 'w-sub')
-      status.classList.add('live')
-      setStatus('loading...')
+      root.classList.add('w-ready', 'w-sub')
       setName('dhruva bhat')
       grow = [1, 1, 1]
       sc.started = true
@@ -297,12 +295,13 @@ export function mountWiresHome(root: HTMLElement) {
     timers.at(700, () => status.classList.add('live'))
     let t = type('hello...', 1300, 110, setStatus)
     t = type('hello...', t + 900, 60, setStatus, true)
-    t = type('loading...', t + 450, 95, setStatus)
-    t += 650
-    timers.at(t, () => root.classList.add('w-moved'))
-    t += 1250
-    timers.at(t, () => root.classList.add('w-namelive'))
-    t = type('dhruva bhat', t, 105, setName)
+    // the cursor hands over from the greeting to the name
+    t += 350
+    timers.at(t, () => {
+      status.classList.remove('live')
+      root.classList.add('w-namelive')
+    })
+    t = type('dhruva bhat', t + 250, 105, setName)
     timers.at(t + 150, () => root.classList.add('w-sub'))
     timers.at(t + 700, () => {
       sc.started = true

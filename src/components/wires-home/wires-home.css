@@ -6,11 +6,9 @@
 .w-sub #wSub{opacity:1}
 .w-caret{display:inline-block;width:2px;height:.9em;background:currentColor;margin-left:4px;vertical-align:-.1em;animation:w-bl 1s steps(1) infinite}
 @keyframes w-bl{50%{opacity:0}}
-#wStatus{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-weight:500;font-size:58px;color:#e8eded;white-space:nowrap;z-index:4;pointer-events:none;transition:left 1.1s cubic-bezier(.65,0,.35,1),top 1.1s cubic-bezier(.65,0,.35,1),transform 1.1s cubic-bezier(.65,0,.35,1),font-size 1.1s cubic-bezier(.65,0,.35,1),color 1.1s}
+#wStatus{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-weight:500;font-size:58px;color:#e8eded;white-space:nowrap;z-index:4;pointer-events:none}
 #wStatus .w-caret{visibility:hidden}
 #wStatus.live .w-caret{visibility:visible}
-.w-moved #wStatus{left:calc(100% - 28px);top:26px;transform:translate(-100%,0);font-size:22px;color:#7d8788}
-.w-ready #wStatus{opacity:0;transition:opacity 1s}
 #wName{position:relative;margin:0;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-weight:600;font-size:clamp(52px,9.5vw,124px);line-height:1.1;color:#fff;z-index:2;white-space:nowrap}
 #wGhost{visibility:hidden}
 #wTyped{position:absolute;left:0;top:0}
@@ -120,4 +118,4 @@
 .w-about{flex-direction:column;align-items:flex-start;gap:24px}
 .w-about figure{flex:none;width:100%;max-width:360px}
 }
-@media (prefers-reduced-motion:reduce){#wSub{transition:none}#wStatus{transition:none}.w-lb{transition:none}.rise,.rise2{opacity:1;transform:none}#wOv.on .rise,.w-detail.go .rise2{animation:none}#wResume,#wNoLight,#wNoLight svg,#wNoLight p,.w-about img.w-alt{transition:none}.w-caret{animation:none}}
+@media (prefers-reduced-motion:reduce){#wSub{transition:none}.w-lb{transition:none}.rise,.rise2{opacity:1;transform:none}#wOv.on .rise,.w-detail.go .rise2{animation:none}#wResume,#wNoLight,#wNoLight svg,#wNoLight p,.w-about img.w-alt{transition:none}.w-caret{animation:none}}
